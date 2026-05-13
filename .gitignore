@@ -1,0 +1,30 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Uploads locais, se existirem futuramente
+uploads/
+tmp/
+temp/
+
+# Configurações locais sensíveis, se criar depois
+.env
+config.local.php
+
+# Pastas que não fazem parte do projeto
+mnt/
+
+# Backups locais
+*.zip
+bibliotech_*_funcionando/
