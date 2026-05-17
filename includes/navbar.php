@@ -49,7 +49,7 @@ function nav_active(string $nome, string $atual): string
 
                 <?php if (hasPermission('relatorios.visualizar')): ?>
                     <li<?= nav_active('relatorios', $pagina_ativa) ?>>
-                        <a href="<?= e(BASE_URL) ?>/emprestimos/relatorio.php">Relatórios</a>
+                        <a href="<?= e(BASE_URL) ?>/relatorios/index.php">Relatórios</a>
                     </li>
                 <?php endif; ?>
 
