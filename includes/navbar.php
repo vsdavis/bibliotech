@@ -13,15 +13,26 @@ function nav_active(string $nome, string $atual): string
 {
     return $nome === $atual ? ' class="active"' : '';
 }
+
+// Iniciais do usuário para o avatar (apenas visual)
+$nome_usuario = trim($_SESSION['usuario_nome'] ?? '');
+$iniciais     = '?';
+if ($nome_usuario !== '') {
+    $partes    = preg_split('/\s+/', $nome_usuario);
+    $iniciais  = mb_strtoupper(mb_substr($partes[0], 0, 1, 'UTF-8'), 'UTF-8');
+    if (count($partes) > 1) {
+        $iniciais .= mb_strtoupper(mb_substr(end($partes), 0, 1, 'UTF-8'), 'UTF-8');
+    }
+}
 ?>
 <header class="topbar">
     <div class="topbar-conteudo">
         <a href="<?= e(BASE_URL) ?>/dashboard.php" class="topbar-logo">
-            <span class="logo-icone">📚</span>
+            <span class="logo-icone" aria-hidden="true">📚</span>
             <span class="logo-texto">BiblioTech</span>
         </a>
 
-        <nav class="topbar-nav" aria-label="Menu principal">
+        <nav class="topbar-nav" id="topbar-nav" aria-label="Menu principal">
             <ul>
                 <?php if (hasPermission('dashboard.visualizar')): ?>
                     <li<?= nav_active('dashboard', $pagina_ativa) ?>>
@@ -62,16 +73,29 @@ function nav_active(string $nome, string $atual): string
         </nav>
 
         <div class="topbar-usuario">
-            <span class="usuario-nome">
-                <?= e($_SESSION['usuario_nome'] ?? '') ?>
-            </span>
-            <span class="usuario-perfil">
-                <?= e(ucfirst($_SESSION['usuario_perfil'] ?? '')) ?>
-            </span>
-            <a href="<?= e(BASE_URL) ?>/logout.php" class="btn-logout">Sair</a>
+            <span class="usuario-avatar" aria-hidden="true"><?= e($iniciais) ?></span>
+            <div class="usuario-info">
+                <span class="usuario-nome">
+                    <?= e($_SESSION['usuario_nome'] ?? '') ?>
+                </span>
+                <span class="usuario-perfil">
+                    <?= e(ucfirst($_SESSION['usuario_perfil'] ?? '')) ?>
+                </span>
+            </div>
+            <a href="<?= e(BASE_URL) ?>/logout.php" class="btn-logout" title="Encerrar sessão">
+                <span aria-hidden="true">⎋</span>
+                <span class="btn-logout-texto">Sair</span>
+            </a>
         </div>
 
-        <button class="topbar-toggle" aria-label="Abrir menu">☰</button>
+        <button
+            class="topbar-toggle"
+            type="button"
+            aria-label="Abrir menu"
+            aria-controls="topbar-nav"
+            aria-expanded="false">
+            <span aria-hidden="true">☰</span>
+        </button>
     </div>
 </header>
 

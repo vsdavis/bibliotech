@@ -10,6 +10,7 @@ $titulo_pagina = $titulo_pagina ?? 'BiblioTech';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Sistema de Gerenciamento de Biblioteca Escolar">
+    <meta name="theme-color" content="#22543D">
     <title><?= e($titulo_pagina) ?> · BiblioTech</title>
     <link rel="stylesheet" href="<?= e(BASE_URL) ?>/assets/css/style.css">
 </head>

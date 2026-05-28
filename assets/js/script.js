@@ -2,7 +2,7 @@
  * BiblioTech — JavaScript global
  *
  * Funcionalidades:
- *  1. Toggle do menu mobile.
+ *  1. Toggle do menu mobile (com aria-expanded e fechamento ao clicar fora).
  *  2. Fechamento de mensagens flash (botão e auto-dismiss).
  *  3. Confirmação de ações destrutivas (atributo data-confirmar).
  *  4. Filtro dinâmico em tabelas (atributo data-filtro).
@@ -19,20 +19,47 @@
     /* ─── 1. Toggle do menu mobile ──────────────────────── */
     const toggleBtn = document.querySelector('.topbar-toggle');
     const nav       = document.querySelector('.topbar-nav');
+
     if (toggleBtn && nav) {
-        toggleBtn.addEventListener('click', () => {
-            nav.classList.toggle('aberto');
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const aberto = nav.classList.toggle('aberto');
+            toggleBtn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+            toggleBtn.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+        });
+
+        // Fecha o menu ao clicar fora dele
+        document.addEventListener('click', (e) => {
+            if (!nav.classList.contains('aberto')) return;
+            if (nav.contains(e.target) || toggleBtn.contains(e.target)) return;
+            nav.classList.remove('aberto');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.setAttribute('aria-label', 'Abrir menu');
+        });
+
+        // Fecha ao pressionar Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && nav.classList.contains('aberto')) {
+                nav.classList.remove('aberto');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+                toggleBtn.setAttribute('aria-label', 'Abrir menu');
+                toggleBtn.focus();
+            }
         });
     }
 
     /* ─── 2. Mensagens flash ────────────────────────────── */
-    document.querySelectorAll('.flash').forEach(flash => {
-        const fechar = flash.querySelector('.flash-fechar');
+    document.querySelectorAll('.flash, .alert').forEach(flash => {
+        const fechar = flash.querySelector('.flash-fechar, .alert-close');
         if (fechar) {
             fechar.addEventListener('click', () => removerFlash(flash));
         }
-        // Auto-dismiss após 5 segundos
-        setTimeout(() => removerFlash(flash), 5000);
+        // Auto-dismiss após 5 segundos (apenas mensagens de sucesso/info)
+        const ehErro = flash.classList.contains('flash-erro') ||
+                       flash.classList.contains('alert-danger');
+        if (!ehErro) {
+            setTimeout(() => removerFlash(flash), 5000);
+        }
     });
 
     function removerFlash(el) {
