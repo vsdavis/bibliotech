@@ -16,6 +16,8 @@
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/conexao.php';
 
+requirePermission('livros.inativar');
+
 $pagina_ativa = 'livros';
 
 // ─── Valida o ID recebido por GET ─────────────────────────────────────────────
@@ -60,7 +62,7 @@ try {
         "SELECT COUNT(*) AS total
            FROM emprestimos
           WHERE livro_id = :id
-            AND status  IN ('ativo', 'atrasado')"
+            AND status  IN ('ativo', 'em_atraso')"
     );
     $stmtEmp->execute([':id' => $id]);
     $emprestimos_ativos = (int) $stmtEmp->fetchColumn();

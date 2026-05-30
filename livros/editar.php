@@ -9,6 +9,8 @@
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/conexao.php';
 
+requirePermission('livros.editar');
+
 $pagina_ativa = 'livros';
 
 // ─── Valida o ID recebido por GET ─────────────────────────────────────────────

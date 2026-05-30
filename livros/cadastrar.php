@@ -8,6 +8,8 @@
 
 require_once __DIR__ . '/../includes/auth.php';
 
+requirePermission('livros.cadastrar');
+
 $pagina_ativa = 'livros';
 
 // Recupera dados do formulário que podem ter sido preservados em sessão

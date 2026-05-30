@@ -35,8 +35,9 @@ if ($status === 'ativo') {
 }
 
 if ($busca !== '') {
-    $where[]         = '(a.nome LIKE :busca OR a.matricula LIKE :busca)';
-    $params[':busca'] = '%' . $busca . '%';
+    $b = montarBuscaPalavras($busca, ['a.nome', 'a.matricula'], 'busca');
+    $where  = array_merge($where,  $b['where']);
+    $params = array_merge($params, $b['params']);
 }
 
 if ($turma !== '') {

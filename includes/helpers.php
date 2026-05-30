@@ -136,6 +136,55 @@ function email_valido(string $email): bool
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 }
 
+/**
+ * Monta cláusulas WHERE para busca por múltiplas palavras.
+ *
+ * Divide o termo de busca em palavras separadas por espaço e gera
+ * uma condição LIKE para cada palavra, exigindo que TODAS estejam
+ * presentes em pelo menos uma das colunas indicadas (lógica AND).
+ *
+ * Exemplo:
+ *   montarBuscaPalavras('joão aug', ['a.nome', 'a.matricula'], 'busca')
+ *
+ *   Retorna:
+ *     'where' => ['(a.nome LIKE :busca0 OR a.matricula LIKE :busca0)',
+ *                 '(a.nome LIKE :busca1 OR a.matricula LIKE :busca1)']
+ *     'params' => [':busca0' => '%joão%', ':busca1' => '%aug%']
+ *
+ * @param string   $termo    Texto digitado pelo usuário
+ * @param string[] $colunas  Colunas do banco a serem pesquisadas
+ * @param string   $prefixo  Prefixo para os placeholders (evita colisão)
+ * @return array{where: string[], params: array<string,string>}
+ */
+function montarBuscaPalavras(string $termo, array $colunas, string $prefixo = 'busca'): array
+{
+    $resultado = ['where' => [], 'params' => []];
+
+    // Normaliza: remove espaços extras e divide em palavras
+    $palavras = preg_split('/\s+/', trim($termo), -1, PREG_SPLIT_NO_EMPTY);
+    if (empty($palavras)) {
+        return $resultado;
+    }
+
+    // Limita a 6 palavras para evitar queries muito pesadas
+    $palavras = array_slice($palavras, 0, 6);
+
+    foreach ($palavras as $i => $palavra) {
+        $param = ':' . $prefixo . $i;
+
+        // Cada palavra deve aparecer em pelo menos uma coluna
+        $likes = array_map(
+            static fn(string $col): string => "$col LIKE $param",
+            $colunas
+        );
+
+        $resultado['where'][]       = '(' . implode(' OR ', $likes) . ')';
+        $resultado['params'][$param] = '%' . $palavra . '%';
+    }
+
+    return $resultado;
+}
+
 
 /* ============================================================
  *  CONTROLE DE PERMISSÕES

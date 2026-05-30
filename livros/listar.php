@@ -12,6 +12,8 @@
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/conexao.php';
 
+requirePermission('livros.visualizar');
+
 $pagina_ativa = 'livros';
 
 // ─── Parâmetros de busca/filtro (GET) ────────────────────────────────────────
@@ -40,8 +42,9 @@ if ($status === 'ativo') {
 // 'todos' → sem filtro de ativo
 
 if ($busca !== '') {
-    $where[]            = '(l.titulo LIKE :busca OR l.autor LIKE :busca OR l.isbn LIKE :busca)';
-    $params[':busca']   = '%' . $busca . '%';
+    $b = montarBuscaPalavras($busca, ['l.titulo', 'l.autor', 'l.isbn'], 'busca');
+    $where  = array_merge($where,  $b['where']);
+    $params = array_merge($params, $b['params']);
 }
 
 $clausula_where = $where ? 'WHERE ' . implode(' AND ', $where) : '';

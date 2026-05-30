@@ -64,7 +64,7 @@ try {
         "SELECT COUNT(*) AS total
            FROM emprestimos
           WHERE aluno_id = :id
-            AND status  IN ('ativo', 'atrasado')"
+            AND status  IN ('ativo', 'em_atraso')"
     );
     $stmtEmp->execute([':id' => $id]);
     $emprestimos_ativos = (int) $stmtEmp->fetchColumn();

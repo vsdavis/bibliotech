@@ -50,8 +50,9 @@ if ($estoque === 'com_estoque') {
 }
 
 if ($busca !== '') {
-    $where[]          = '(l.titulo LIKE :busca OR l.autor LIKE :busca OR l.isbn LIKE :busca)';
-    $params[':busca'] = '%' . $busca . '%';
+    $b = montarBuscaPalavras($busca, ['l.titulo', 'l.autor', 'l.isbn'], 'busca');
+    $where  = array_merge($where,  $b['where']);
+    $params = array_merge($params, $b['params']);
 }
 
 $clausula_where = 'WHERE ' . implode(' AND ', $where);

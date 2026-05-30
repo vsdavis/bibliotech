@@ -28,7 +28,11 @@ if ($nome_usuario !== '') {
 <header class="topbar">
     <div class="topbar-conteudo">
         <a href="<?= e(BASE_URL) ?>/dashboard.php" class="topbar-logo">
-            <span class="logo-icone" aria-hidden="true">📚</span>
+            <img src="<?= e(BASE_URL) ?>/assets/img/logo-icon.svg"
+                 alt=""
+                 class="logo-img"
+                 width="46" height="36"
+                 aria-hidden="true">
             <span class="logo-texto">BiblioTech</span>
         </a>
 

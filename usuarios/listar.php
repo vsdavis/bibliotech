@@ -50,8 +50,9 @@ if ($perfil !== 'todos') {
 }
 
 if ($busca !== '') {
-    $where[]          = '(u.nome LIKE :busca OR u.email LIKE :busca)';
-    $params[':busca'] = '%' . $busca . '%';
+    $b = montarBuscaPalavras($busca, ['u.nome', 'u.email'], 'busca');
+    $where  = array_merge($where,  $b['where']);
+    $params = array_merge($params, $b['params']);
 }
 
 $clausula_where = $where ? 'WHERE ' . implode(' AND ', $where) : '';

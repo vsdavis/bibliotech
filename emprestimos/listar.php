@@ -84,13 +84,15 @@ if ($status !== 'todos') {
 }
 
 if ($busca_aluno !== '') {
-    $where[]                  = '(a.nome LIKE :buscaaluno OR a.matricula LIKE :buscaaluno)';
-    $params[':buscaaluno']    = '%' . $busca_aluno . '%';
+    $b = montarBuscaPalavras($busca_aluno, ['a.nome', 'a.matricula'], 'baluno');
+    $where  = array_merge($where,  $b['where']);
+    $params = array_merge($params, $b['params']);
 }
 
 if ($busca_livro !== '') {
-    $where[]                  = '(l.titulo LIKE :buscalivro OR l.autor LIKE :buscalivro OR l.isbn LIKE :buscalivro)';
-    $params[':buscalivro']    = '%' . $busca_livro . '%';
+    $b = montarBuscaPalavras($busca_livro, ['l.titulo', 'l.autor', 'l.isbn'], 'blivro');
+    $where  = array_merge($where,  $b['where']);
+    $params = array_merge($params, $b['params']);
 }
 
 if ($data_de_val !== null) {

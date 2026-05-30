@@ -144,6 +144,19 @@ img { max-width: 100%; height: auto; }
 }
 .topbar-logo:hover { color: var(--branco); opacity: .9; }
 .logo-icone { font-size: 1.5rem; }
+.logo-img {
+    display: block;
+    flex-shrink: 0;
+}
+
+/* ── Logo completa (login) ── */
+.logo-completo {
+    display: block;
+    width: 300px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 1.5rem;
+}
 
 .topbar-nav { flex: 1; }
 .topbar-nav ul {
