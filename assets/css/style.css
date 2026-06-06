@@ -256,6 +256,9 @@ img { max-width: 100%; height: auto; }
 }
 .topbar-toggle:hover { background: rgba(255,255,255,.12); }
 
+/* ── Bloco de usuário + sair dentro do menu (apenas mobile) ── */
+.nav-usuario-mobile { display: none; }
+
 /* ── Ícone hambúrguer animado (3 barras → X) ── */
 .hamburguer {
     display: block;
@@ -588,6 +591,192 @@ body.menu-aberto { overflow: hidden; }
     margin: 0 0 1.25rem 0;
 }
 .atalhos { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+/* ============================================================
+   DASHBOARD (novo design — hero + indicadores)
+   ============================================================ */
+.dashboard { gap: 1.25rem; }
+
+.dash-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--raio-grande);
+    padding: 1.9rem 2rem;
+    color: var(--branco);
+    background:
+        radial-gradient(circle at 88% -20%, rgba(72,176,124,.45), transparent 55%),
+        linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde-principal) 100%);
+    box-shadow: var(--sombra);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+.dash-hero::after {
+    content: "";
+    position: absolute;
+    right: -50px;
+    bottom: -70px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+}
+.dash-hero-info { position: relative; z-index: 1; min-width: 0; }
+.dash-hero-data {
+    display: inline-block;
+    font-size: .72rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.85);
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    padding: .25rem .75rem;
+    border-radius: var(--raio-pill);
+    margin-bottom: .85rem;
+}
+.dash-hero-titulo {
+    margin: 0;
+    color: var(--branco);
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+.dash-hero-sub {
+    margin: .4rem 0 0;
+    color: rgba(255,255,255,.85);
+    font-size: .95rem;
+    max-width: 62ch;
+}
+.dash-hero-sub strong { color: var(--branco); }
+.dash-hero-acoes {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: .6rem;
+    flex-wrap: wrap;
+}
+.dash-acao {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.3);
+    color: var(--branco);
+    font-weight: 600;
+    font-size: .9rem;
+    padding: .55rem .95rem;
+    border-radius: var(--raio);
+    transition: var(--transicao);
+}
+.dash-acao:hover {
+    background: var(--branco);
+    color: var(--verde-escuro);
+    border-color: var(--branco);
+}
+.dash-acao svg { width: 16px; height: 16px; }
+
+.dash-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+.dash-card {
+    background: var(--card-bg);
+    border: 1px solid var(--borda-suave);
+    border-radius: var(--raio-grande);
+    padding: 1.25rem 1.35rem;
+    box-shadow: var(--sombra-sm);
+    transition: var(--transicao);
+    display: flex;
+    flex-direction: column;
+}
+.dash-card:hover { box-shadow: var(--sombra); transform: translateY(-2px); }
+.dash-card-topo {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    margin-bottom: .6rem;
+}
+.dash-card-icone {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+}
+.dash-card-icone svg { width: 22px; height: 22px; }
+.dash-card-rotulo {
+    font-size: .76rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    line-height: 1.25;
+}
+.dash-card-valor {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+    line-height: 1.05;
+}
+.dash-card-extra {
+    font-size: .82rem;
+    color: var(--texto-secundario);
+    margin-top: .2rem;
+}
+.dash-card-barra {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--borda-suave);
+    overflow: hidden;
+    margin: .6rem 0 .35rem;
+}
+.dash-card-barra span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--verde-principal);
+}
+
+/* Acentos por tipo de indicador */
+.dash-card--alunos .dash-card-icone { background: var(--info-bg); color: #1E4E8C; }
+.dash-card--emprestimos .dash-card-icone { background: var(--roxo-claro); color: #4A3FB8; }
+.dash-card--atraso .dash-card-icone { background: var(--sucesso-bg); color: var(--sucesso); }
+.dash-card--atraso.is-critico .dash-card-icone { background: var(--perigo-bg); color: var(--perigo); }
+.dash-card--atraso.is-critico .dash-card-valor { color: var(--perigo); }
+
+/* Gráficos */
+.dash-graficos {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1rem;
+}
+.dash-grafico .card-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+.dash-grafico-meta {
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+}
+.dash-grafico-canvas {
+    position: relative;
+    height: 280px;
+}
+.dash-grafico-vazio {
+    color: var(--texto-secundario);
+    font-size: .9rem;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    margin: 0;
+}
 
 /* ============================================================
    BOTÕES
@@ -1691,7 +1880,7 @@ textarea.is-invalid {
         border-radius: 0 0 14px 14px;
         z-index: 95;
     }
-    .topbar-nav.aberto { max-height: 480px; }
+    .topbar-nav.aberto { max-height: 560px; }
     .topbar-nav ul {
         flex-direction: column;
         padding: .65rem;
@@ -1705,15 +1894,71 @@ textarea.is-invalid {
     .topbar-nav li.active a { background: rgba(255,255,255,.15); }
     .topbar-nav li.active a::after { display: none; }
 
-    .topbar-usuario { gap: .5rem; }
+    .topbar-usuario { gap: .5rem; margin-left: auto; }
     .usuario-info { display: none; }
-    .btn-logout-texto { display: none; }
-    .btn-logout {
-        padding: .4rem .6rem;
+    /* O sair sai do topo (apertado) e vai pro menu, mais clean */
+    .btn-logout { display: none; }
+
+    .nav-usuario-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin: .5rem .25rem .15rem;
+        padding-top: .85rem;
+        border-top: 1px solid rgba(255,255,255,.15);
+    }
+    .num-perfil {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        min-width: 0;
+    }
+    .num-avatar {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
         border-radius: 50%;
-        width: 36px;
-        height: 36px;
+        background: rgba(255,255,255,.18);
+        border: 1.5px solid rgba(255,255,255,.25);
+        color: var(--branco);
+        display: inline-flex;
+        align-items: center;
         justify-content: center;
+        font-weight: 700;
+        font-size: .85rem;
+    }
+    .num-texto { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+    .num-nome {
+        color: var(--branco);
+        font-weight: 600;
+        font-size: .92rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .num-cargo {
+        color: rgba(255,255,255,.7);
+        font-size: .72rem;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+    .num-sair {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        color: var(--branco);
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.3);
+        padding: .5rem .9rem;
+        border-radius: var(--raio);
+        font-size: .9rem;
+        font-weight: 600;
+    }
+    .num-sair:hover {
+        background: rgba(255,255,255,.22);
+        color: var(--branco);
     }
 
     .login-container { max-width: 440px; }
@@ -1734,6 +1979,14 @@ textarea.is-invalid {
     .stats-grid { grid-template-columns: 1fr; }
 
     .cards-relatorios { grid-template-columns: 1fr; }
+
+    .dash-hero { padding: 1.5rem 1.35rem; }
+    .dash-hero-titulo { font-size: 1.45rem; }
+    .dash-hero-acoes { width: 100%; }
+    .dash-acao { flex: 1 1 auto; justify-content: center; }
+    .dash-card-valor { font-size: 1.75rem; }
+    .dash-graficos { grid-template-columns: 1fr; }
+    .dash-grafico-canvas { height: 240px; }
 
     .pagina-titulo,
     .pagina-cabecalho h1 { font-size: 1.4rem; }

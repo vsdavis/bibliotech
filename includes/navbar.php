@@ -74,6 +74,19 @@ if ($nome_usuario !== '') {
                     </li>
                 <?php endif; ?>
             </ul>
+
+            <div class="nav-usuario-mobile">
+                <div class="num-perfil">
+                    <span class="num-avatar" aria-hidden="true"><?= e($iniciais) ?></span>
+                    <div class="num-texto">
+                        <span class="num-nome"><?= e($_SESSION['usuario_nome'] ?? '') ?></span>
+                        <span class="num-cargo"><?= e(ucfirst($_SESSION['usuario_perfil'] ?? '')) ?></span>
+                    </div>
+                </div>
+                <a href="<?= e(BASE_URL) ?>/logout.php" class="num-sair">
+                    <span aria-hidden="true">⎋</span> Encerrar sessão
+                </a>
+            </div>
         </nav>
 
         <div class="topbar-usuario">

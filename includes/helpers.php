@@ -174,9 +174,10 @@ function asset(string $caminho_relativo): string
  *   montarBuscaPalavras('joão aug', ['a.nome', 'a.matricula'], 'busca')
  *
  *   Retorna:
- *     'where' => ['(a.nome LIKE :busca0 OR a.matricula LIKE :busca0)',
- *                 '(a.nome LIKE :busca1 OR a.matricula LIKE :busca1)']
- *     'params' => [':busca0' => '%joão%', ':busca1' => '%aug%']
+ *     'where' => ['(a.nome LIKE :busca_0_0 OR a.matricula LIKE :busca_0_1)',
+ *                 '(a.nome LIKE :busca_1_0 OR a.matricula LIKE :busca_1_1)']
+ *     'params' => [':busca_0_0' => '%joão%', ':busca_0_1' => '%joão%',
+ *                  ':busca_1_0' => '%aug%',  ':busca_1_1' => '%aug%']
  *
  * @param string   $termo    Texto digitado pelo usuário
  * @param string[] $colunas  Colunas do banco a serem pesquisadas
@@ -197,16 +198,21 @@ function montarBuscaPalavras(string $termo, array $colunas, string $prefixo = 'b
     $palavras = array_slice($palavras, 0, 6);
 
     foreach ($palavras as $i => $palavra) {
-        $param = ':' . $prefixo . $i;
+        $likes = [];
 
-        // Cada palavra deve aparecer em pelo menos uma coluna
-        $likes = array_map(
-            static fn(string $col): string => "$col LIKE $param",
-            $colunas
-        );
+        // IMPORTANTE: cada coluna recebe um placeholder ÚNICO (ex.: :busca_0_0,
+        // :busca_0_1). Reutilizar o mesmo nome de placeholder em vários pontos
+        // da query falha quando PDO::ATTR_EMULATE_PREPARES = false (erro HY093),
+        // que é exatamente o caso da conexão deste projeto. Por isso geramos um
+        // placeholder distinto por (palavra, coluna), todos com o mesmo valor.
+        foreach (array_values($colunas) as $j => $col) {
+            $param = ':' . $prefixo . '_' . $i . '_' . $j;
+            $likes[]                     = "$col LIKE $param";
+            $resultado['params'][$param] = '%' . $palavra . '%';
+        }
 
-        $resultado['where'][]       = '(' . implode(' OR ', $likes) . ')';
-        $resultado['params'][$param] = '%' . $palavra . '%';
+        // Cada palavra deve aparecer em pelo menos uma das colunas
+        $resultado['where'][] = '(' . implode(' OR ', $likes) . ')';
     }
 
     return $resultado;
