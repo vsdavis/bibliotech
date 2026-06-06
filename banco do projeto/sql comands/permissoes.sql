@@ -1,12 +1,6 @@
 USE bibliotech;
  
  
--- ------------------------------------------------------------
--- 1. TABELA: permissoes
---    Catálogo de todas as permissões do sistema.
---    "codigo" é a chave usada pelo PHP em hasPermission().
--- ------------------------------------------------------------
- 
 CREATE TABLE IF NOT EXISTS permissoes (
     id         INT          NOT NULL AUTO_INCREMENT,
     codigo     VARCHAR(50)  NOT NULL,                -- ex.: 'livros.editar'
@@ -21,12 +15,6 @@ CREATE TABLE IF NOT EXISTS permissoes (
 );
  
  
--- ------------------------------------------------------------
--- 2. TABELA: usuario_permissoes
---    Permissões individuais concedidas a cada usuário.
---    Quando "permitido = 1", o usuário possui a permissão.
---    UNIQUE(usuario_id, permissao_id) impede duplicatas.
--- ------------------------------------------------------------
  
 CREATE TABLE IF NOT EXISTS usuario_permissoes (
     id            INT       NOT NULL AUTO_INCREMENT,
@@ -57,9 +45,6 @@ CREATE INDEX idx_up_usuario   ON usuario_permissoes (usuario_id);
 CREATE INDEX idx_up_permissao ON usuario_permissoes (permissao_id);
  
  
--- ------------------------------------------------------------
--- 3. POPULAÇÃO INICIAL DE PERMISSÕES
--- ------------------------------------------------------------
  
 INSERT INTO permissoes (codigo, nome, descricao, grupo) VALUES
     -- Dashboard
@@ -111,10 +96,6 @@ INSERT INTO permissoes (codigo, nome, descricao, grupo) VALUES
      'Permite editar permissões individuais de cada usuário.', 'Usuários');
  
  
--- ------------------------------------------------------------
--- 4. CONCEDE TODAS AS PERMISSÕES AO ADMIN PADRÃO
---    (id 1 = admin@bibliotech.com criado no script principal)
--- ------------------------------------------------------------
  
 INSERT INTO usuario_permissoes (usuario_id, permissao_id, permitido)
 SELECT u.id, p.id, 1
@@ -125,10 +106,6 @@ SELECT u.id, p.id, 1
 ON DUPLICATE KEY UPDATE permitido = 1;
  
  
--- ------------------------------------------------------------
--- 5. CONCEDE PERMISSÕES BÁSICAS AO BIBLIOTECÁRIO PADRÃO
---    (apenas operações comuns de biblioteca, sem gestão de usuários)
--- ------------------------------------------------------------
  
 INSERT INTO usuario_permissoes (usuario_id, permissao_id, permitido)
 SELECT u.id, p.id, 1
@@ -144,8 +121,4 @@ SELECT u.id, p.id, 1
    )
 ON DUPLICATE KEY UPDATE permitido = 1;
  
- 
--- ============================================================
--- FIM DA ATUALIZAÇÃO
--- ============================================================
  

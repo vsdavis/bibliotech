@@ -98,10 +98,16 @@ if ($nome_usuario !== '') {
             aria-label="Abrir menu"
             aria-controls="topbar-nav"
             aria-expanded="false">
-            <span aria-hidden="true">☰</span>
+            <span class="hamburguer" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
         </button>
     </div>
 </header>
+
+<div class="nav-overlay" id="nav-overlay" hidden></div>
 
 <main class="conteudo">
     <?= exibir_flash() ?>

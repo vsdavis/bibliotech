@@ -137,6 +137,33 @@ function email_valido(string $email): bool
 }
 
 /**
+ * Gera a URL de um asset (CSS/JS/imagem) com "cache-busting".
+ *
+ * Acrescenta ?v=<timestamp> baseado na data de modificação do arquivo
+ * (filemtime). Assim, sempre que o arquivo muda, o navegador é forçado
+ * a baixar a versão nova — evitando aquele problema de "alterei o CSS
+ * mas o navegador continua mostrando o antigo".
+ *
+ * Uso:
+ *   <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>">
+ *   <script src="<?= asset('assets/js/script.js') ?>"></script>
+ *
+ * @param string $caminho_relativo Caminho a partir da raiz do projeto
+ *                                 (ex.: 'assets/css/style.css')
+ * @return string URL pronta e escapada para uso em atributos HTML
+ */
+function asset(string $caminho_relativo): string
+{
+    $caminho_relativo = ltrim($caminho_relativo, '/');
+    $arquivo_fisico   = __DIR__ . '/../' . $caminho_relativo;
+
+    // Se o arquivo existir, usa a data de modificação; senão, um fallback.
+    $versao = @filemtime($arquivo_fisico) ?: date('Ymd');
+
+    return e(BASE_URL . '/' . $caminho_relativo . '?v=' . $versao);
+}
+
+/**
  * Monta cláusulas WHERE para busca por múltiplas palavras.
  *
  * Divide o termo de busca em palavras separadas por espaço e gera

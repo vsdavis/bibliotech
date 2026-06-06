@@ -1,29 +1,3 @@
--- ============================================================
---  BiblioTech — Script SQL de Criação do Banco de Dados
---  Versão: 1.0
---  Banco  : MySQL 8.x
---  Charset: utf8mb4 (suporte completo a Unicode / emojis)
---  Collate: utf8mb4_unicode_ci (ordenação correta em PT-BR)
--- ============================================================
---
---  REGRAS DE SEGURANÇA APLICADAS:
---    [1] Chaves primárias com AUTO_INCREMENT em todas as tabelas.
---    [2] Chaves estrangeiras com ON DELETE RESTRICT para proteger
---        a integridade referencial.
---    [3] UNIQUE em e-mail (usuarios) e matrícula (alunos).
---    [4] Campo "ativo" (TINYINT) em todas as tabelas principais —
---        registros nunca são excluídos fisicamente.
---    [5] Tipos de dados adequados a cada campo (YEAR, DATE,
---        ENUM, TEXT, TINYINT, etc.).
---    [6] Senhas nunca armazenadas em texto puro. Os hashes
---        abaixo foram gerados com bcrypt cost=10, compatível
---        com password_hash($senha, PASSWORD_DEFAULT) do PHP.
---    [7] Índices adicionais para acelerar as consultas mais
---        frequentes do sistema.
---
--- ============================================================
-
-
 -- ------------------------------------------------------------
 -- 0. BANCO DE DADOS
 -- ------------------------------------------------------------
@@ -111,12 +85,6 @@ CREATE TABLE IF NOT EXISTS livros (
 );
 
 
--- ------------------------------------------------------------
--- 3. TABELA: alunos
---    Alunos cadastrados para controle de empréstimos.
---    Não possuem acesso ao sistema (sem login/senha).
---    Matrícula é UNIQUE para evitar duplicatas. [3]
--- ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS alunos (
     id         INT           NOT NULL AUTO_INCREMENT,
@@ -135,12 +103,6 @@ CREATE TABLE IF NOT EXISTS alunos (
 );
 
 
--- ------------------------------------------------------------
--- 4. TABELA: emprestimos
---    Núcleo do sistema. Relaciona alunos ↔ livros ↔ usuarios.
---    Registros nunca excluídos — status controla o ciclo de vida.
---    data_devolucao é NULL enquanto o livro não foi devolvido.
--- ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS emprestimos (
     id                      INT      NOT NULL AUTO_INCREMENT,
@@ -201,10 +163,6 @@ CREATE TABLE IF NOT EXISTS emprestimos (
 );
 
 
--- ============================================================
--- 5. ÍNDICES ADICIONAIS
---    Aceleram as consultas mais frequentes do sistema. [7]
--- ============================================================
 
 -- Buscas de livros por título e autor (listagem e autocomplete)
 CREATE INDEX idx_livros_titulo
@@ -237,11 +195,6 @@ CREATE INDEX idx_emp_data_prevista
     ON emprestimos (data_prevista_devolucao);
 
 
--- ============================================================
--- 6. VIEW: vw_emprestimos_ativos
---    Facilita a listagem principal de empréstimos com todos
---    os dados necessários em uma única consulta.
--- ============================================================
 
 CREATE OR REPLACE VIEW vw_emprestimos_ativos AS
 SELECT
@@ -276,10 +229,6 @@ FROM emprestimos e
     INNER JOIN usuarios  u ON u.id = e.usuario_id;
 
 
--- ============================================================
--- 7. VIEW: vw_dashboard
---    Todos os indicadores do painel em uma única consulta.
--- ============================================================
 
 CREATE OR REPLACE VIEW vw_dashboard AS
 SELECT
@@ -298,13 +247,6 @@ SELECT
     (SELECT COUNT(*) FROM emprestimos)                            AS emprestimos_total;
 
 
--- ============================================================
--- 8. PROCEDURE: sp_registrar_devolucao
---    Registra a devolução de um empréstimo em transação única:
---      1. Atualiza status e data_devolucao em emprestimos.
---      2. Incrementa quantidade_disponivel em livros.
---    Ambas as operações ocorrem atomicamente. [TRANSAÇÃO]
--- ============================================================
 
 DELIMITER $$
 
@@ -352,14 +294,6 @@ END$$
 DELIMITER ;
 
 
--- ============================================================
--- 9. PROCEDURE: sp_registrar_emprestimo
---    Registra um empréstimo em transação única:
---      1. Verifica se há exemplar disponível.
---      2. Insere o registro em emprestimos.
---      3. Decrementa quantidade_disponivel em livros.
---    Ambas as operações ocorrem atomicamente. [TRANSAÇÃO]
--- ============================================================
 
 DELIMITER $$
 
@@ -426,13 +360,6 @@ END$$
 DELIMITER ;
 
 
--- ============================================================
--- 10. EVENT: ev_atualizar_atrasos
---    Evento agendado (roda diariamente à meia-noite) para
---    marcar automaticamente como 'em_atraso' os empréstimos
---    cujo prazo de devolução já foi ultrapassado.
---    Requer: SET GLOBAL event_scheduler = ON;  no MySQL.
--- ============================================================
 
 SET GLOBAL event_scheduler = ON;
 
@@ -450,7 +377,6 @@ CREATE EVENT IF NOT EXISTS ev_atualizar_atrasos
 -- FIM DO SCRIPT
 -- ============================================================
 --
---  CREDENCIAIS PADRÃO (altere após o primeiro acesso):
 --  ┌──────────────────────────────────┬─────────────────┬─────────────┐
 --  │ E-mail                           │ Senha           │ Perfil      │
 --  ├──────────────────────────────────┼─────────────────┼─────────────┤
@@ -458,12 +384,5 @@ CREATE EVENT IF NOT EXISTS ev_atualizar_atrasos
 --  │ bibliotecario@bibliotech.com     │ biblio123       │ bibliotecario│
 --  └──────────────────────────────────┴─────────────────┴─────────────┘
 --
---  COMO EXECUTAR:
---  1. Abra o phpMyAdmin (http://localhost/phpmyadmin)
---  2. Clique em "Importar" → selecione este arquivo .sql
---  3. Clique em "Executar"
---
---  OU via linha de comando:
---  mysql -u root -p < bibliotech.sql
 --
 -- ============================================================

@@ -109,6 +109,8 @@ require_once __DIR__ . '/../includes/navbar.php';
             <select id="aluno_id"
                     name="aluno_id"
                     class="form-campo"
+                    data-busca
+                    data-busca-placeholder="Digite o nome ou a matrícula do aluno…"
                     required
                     <?= empty($alunos) ? 'disabled' : '' ?>>
                 <option value="">— Selecione um aluno —</option>
@@ -128,6 +130,8 @@ require_once __DIR__ . '/../includes/navbar.php';
             <select id="livro_id"
                     name="livro_id"
                     class="form-campo"
+                    data-busca
+                    data-busca-placeholder="Digite o título ou o autor do livro…"
                     required
                     <?= empty($livros) ? 'disabled' : '' ?>>
                 <option value="">— Selecione um livro —</option>
