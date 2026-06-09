@@ -1,30 +1,43 @@
-# Sistema operacional
+# ─── Sistema operacional ───────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Editor/IDE
+# ─── Editor / IDE ──────────────────────────────────────────────────────────────
 .vscode/
 .idea/
+*.code-workspace
 
-# Logs e arquivos temporários
+# ─── Node (dependências locais, ex: Chart.js instalado via npm) ────────────────
+node_modules/
+package-lock.json
+
+# ─── Logs e arquivos temporários ───────────────────────────────────────────────
 *.log
 *.tmp
 *.bak
 *.swp
+*.orig
 
-# Uploads locais, se existirem futuramente
+# ─── Arquivos de desenvolvimento / testes ──────────────────────────────────────
+teste.php
+test.php
+debug.php
+phpinfo.php
+
+# ─── Uploads locais e pastas temporárias ───────────────────────────────────────
 uploads/
 tmp/
 temp/
 
-# Configurações locais sensíveis, se criar depois
+# ─── Configurações locais sensíveis ────────────────────────────────────────────
+# Renomeie conexao.php para conexao.exemplo.php e adicione o real aqui
+# quando o projeto usar credenciais de produção.
 .env
 config.local.php
+conexao.local.php
 
-# Pastas que não fazem parte do projeto
-mnt/
-
-# Backups locais
+# ─── Backups e builds ──────────────────────────────────────────────────────────
 *.zip
 bibliotech_*_funcionando/
+/mnt/
