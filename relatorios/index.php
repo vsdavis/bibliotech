@@ -88,7 +88,7 @@ require_once __DIR__ . '/../includes/navbar.php';
 <div class="cards-relatorios">
 
     <div class="card card-relatorio">
-        <div class="card-relatorio-icone">📋</div>
+        <div class="card-relatorio-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 12h6"/><path d="M9 16h4"/></svg></div>
         <h2 class="card-relatorio-titulo">Relatório de Empréstimos</h2>
         <p class="card-relatorio-descricao">
             Consulte os empréstimos filtrando por status (todos, ativos,
@@ -102,7 +102,7 @@ require_once __DIR__ . '/../includes/navbar.php';
     </div>
 
     <div class="card card-relatorio">
-        <div class="card-relatorio-icone">📚</div>
+        <div class="card-relatorio-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
         <h2 class="card-relatorio-titulo">Relatório de Livros</h2>
         <p class="card-relatorio-descricao">
             Visualize todo o acervo ativo com quantidade total, disponível e
