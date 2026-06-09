@@ -206,17 +206,7 @@ usuarios.visualizar · usuarios.cadastrar · usuarios.editar · usuarios.inativa
 
 ---
 
-## Equipe
 
-Desenvolvido pela **Equipe ORBIT** como projeto de extensão acadêmica:
-
-| Nome | RA |
-|------|----|
-| David Vieira Souza | 324101323 |
-| Gustavo Souza Barreto | 324100078 |
-| Samuel Henrique da Silva Santos | 324100601 |
-| César Augusto de Oliveira Batista | 324101117 |
-| Leticia Soldani de Sousa | 324100996 |
 
 **Orientação:** Prof. Sérgio João Guimarães da Silva  
 **Instituição:** UNINOVE — Universidade Nove de Julho  
